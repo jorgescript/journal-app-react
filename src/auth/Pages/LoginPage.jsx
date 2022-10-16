@@ -1,8 +1,9 @@
+import { useMemo } from "react";
 import { AuthLayout } from "../layout/AuthLayout";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { Google } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
 import {
   checkingAuthentication,
@@ -10,19 +11,22 @@ import {
 } from "../../store/auth/authThunks";
 
 export const LoginPage = () => {
+  const { status } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  var { email, password, onInputChange } = useForm({
+  const isAuthenticating = useMemo(() => status === "checking", [status]);
+
+  const { email, password, onInputChange } = useForm({
     email: "jorge.mosqueda@gmail.com",
     password: "123456789",
   });
 
-  var onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(checkingAuthentication());
+    dispatch(checkingAuthentication(email, password));
   };
 
-  var onGoogleSigIn = () => {
+  const onGoogleSigIn = () => {
     console.log("onGoogleSigIn");
     dispatch(startGoogleSignIn());
   };
@@ -54,12 +58,22 @@ export const LoginPage = () => {
           </Grid>
           <Grid container spacing={2} sx={{ marginBottom: 2 }}>
             <Grid item xs={12} sm={6} sx={{ marginTop: 2 }}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={isAuthenticating}
+              >
                 Login
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} sx={{ marginTop: 2 }}>
-              <Button variant="contained" fullWidth onClick={onGoogleSigIn}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={onGoogleSigIn}
+                disabled={isAuthenticating}
+              >
                 <Google />
                 <Typography sx={{ marginLeft: 1 }}>Google</Typography>
               </Button>
