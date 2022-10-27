@@ -3,6 +3,8 @@ import { useForm } from "../../hooks/useForm";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { AuthLayout } from "../layout/AuthLayout";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { startCreatingUserWithEmailAndPassword } from "../../store/auth/authThunks";
 
 const formData = {
   displayName: "",
@@ -33,7 +35,13 @@ export const RegisterPage = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setFormSubmited(true);
+    if (!isFormValid) return;
+    dispatch(
+      startCreatingUserWithEmailAndPassword({ email, password, displayName })
+    );
   };
+
+  const dispatch = useDispatch();
 
   return (
     <AuthLayout title="Create Account">
