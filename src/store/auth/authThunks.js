@@ -3,7 +3,7 @@ import {
   sigInWithForm,
   signInWithGoogle,
 } from "../../firebase/providers";
-import { checkingCredentials, loggin, logout } from "./authSlide";
+import { checkingCredentials, loggin, logout } from "./authSlice";
 
 export const startGoogleSignIn = () => {
   return async (dispatch) => {
