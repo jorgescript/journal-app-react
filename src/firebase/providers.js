@@ -47,3 +47,7 @@ export const sigInWithForm = async ({ email, password }) => {
     return { ok: false, message: error };
   }
 };
+
+export const logOutFirebase = async () => {
+  return await FirebaseAuth.signOut();
+};

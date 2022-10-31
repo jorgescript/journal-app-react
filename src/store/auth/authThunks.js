@@ -1,4 +1,5 @@
 import {
+  logOutFirebase,
   registerUserWithEmailAndPassword,
   sigInWithForm,
   signInWithGoogle,
@@ -42,5 +43,12 @@ export const startEmailAndPaswordSigIn = ({ email, password }) => {
     });
     if (!ok) return dispatch(logout({ errorMessage: message }));
     return dispatch(loggin({ uid, photoURL, email, displayName }));
+  };
+};
+
+export const startLogOut = () => {
+  return async (dispatch) => {
+    await logOutFirebase();
+    dispatch(logout({ errorMessage: null }));
   };
 };
