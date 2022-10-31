@@ -1,22 +1,17 @@
-import { async } from "@firebase/util";
 import {
   registerUserWithEmailAndPassword,
+  sigInWithForm,
   signInWithGoogle,
 } from "../../firebase/providers";
 import { checkingCredentials, loggin, logout } from "./authSlide";
 
-export const checkingAuthentication = (email, password) => {
-  return async (dispatch) => {
-    dispatch(checkingCredentials());
-  };
-};
-
 export const startGoogleSignIn = () => {
   return async (dispatch) => {
     dispatch(checkingCredentials());
-    const res = await signInWithGoogle();
-    if (!res.ok) return dispatch(logout());
-    return dispatch(loggin(res));
+    const { ok, displayName, email, photoURL, uid, message } =
+      await signInWithGoogle();
+    if (!ok) return dispatch(logout({ errorMessage: message }));
+    return dispatch(loggin({ displayName, email, photoURL, uid }));
   };
 };
 
@@ -35,5 +30,17 @@ export const startCreatingUserWithEmailAndPassword = ({
       });
     if (!ok) return dispatch(logout({ errorMessage: message }));
     return dispatch(loggin({ uid, email, displayName, photoURL }));
+  };
+};
+
+export const startEmailAndPaswordSigIn = ({ email, password }) => {
+  return async (dispatch) => {
+    dispatch(checkingCredentials());
+    const { ok, uid, photoURL, displayName, message } = await sigInWithForm({
+      email,
+      password,
+    });
+    if (!ok) return dispatch(logout({ errorMessage: message }));
+    return dispatch(loggin({ uid, photoURL, email, displayName }));
   };
 };
