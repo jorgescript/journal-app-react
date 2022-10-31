@@ -5,7 +5,10 @@ import { SideBar } from "../components/SideBar";
 
 export const JournalLayout = ({ children }) => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{ display: "flex" }}
+      className="animate__animated animate__fadeIn animate__faster"
+    >
       <NavBar drawerWidth={240} />
       <SideBar drawerWidth={240} />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
