@@ -15,7 +15,6 @@ export const JournalPage = () => {
     dispatch(savingNewNote());
     dispatch(startNewNote());
   };
-
   return (
     <JournalLayout>
       {active ? <NoteView /> : <NothingSelectedView />}
