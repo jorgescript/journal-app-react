@@ -18,16 +18,19 @@ export const jornalSlice = createSlice({
     },
     setActiveNote: (state, action) => {
       state.active = action.payload;
+      state.savedMessage = "";
     },
     setNotes: (state, action) => {
       state.notes = action.payload;
     },
     setSaving: (state, action) => {
       state.isSaving = true;
+      state.savedMessage = "";
     },
     updatedNote: (state, action) => {
       state.notes = action.payload;
       state.isSaving = false;
+      state.savedMessage = "Nota actualizada";
     },
     deleteNote: (state, action) => {},
   },

@@ -7,10 +7,15 @@ import { useMemo } from "react";
 import { useEffect } from "react";
 import { setActiveNote, setSaving } from "../../store/journal/journalSlice";
 import { startSavingNote } from "../../store/journal/journalThunks";
+import Swal from "sweetalert2";
 
 export const NoteView = () => {
   const dispatch = useDispatch();
-  const { active: note } = useSelector((state) => state.journal);
+  const {
+    active: note,
+    savedMessage,
+    isSaving,
+  } = useSelector((state) => state.journal);
   const { title, body, date, onInputChange, formState } = useForm(note);
   const dateString = useMemo(() => new Date(date).toUTCString(), [date]);
 
@@ -22,6 +27,16 @@ export const NoteView = () => {
   useEffect(() => {
     dispatch(setActiveNote(formState));
   }, [formState]);
+
+  useEffect(() => {
+    if (savedMessage) {
+      Swal.fire({
+        title: "Nota actualizada",
+        icon: "success",
+        confirmButtonText: "Cool",
+      });
+    }
+  }, [savedMessage]);
 
   return (
     <Grid
@@ -38,7 +53,12 @@ export const NoteView = () => {
         </Typography>
       </Grid>
       <Grid item>
-        <Button onClick={onSaveNote} color="primary" sx={{ padding: 2 }}>
+        <Button
+          color="primary"
+          disabled={isSaving}
+          sx={{ padding: 2 }}
+          onClick={onSaveNote}
+        >
           <SaveOutlined xs={{ fontsize: 30 }} />
           Guardar
         </Button>
